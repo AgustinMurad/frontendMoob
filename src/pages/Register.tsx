@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Register = () => {
@@ -8,12 +8,17 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [validationError, setValidationError] = useState('');
-  const { register, isLoading, error, clearError } = useAuth();
+  const { register, isLoading, error, clearError, isAuthenticated } = useAuth();
 
   useEffect(() => {
     // Limpiar error al montar el componente
     clearError();
   }, [clearError]);
+
+  // Si ya está autenticado, redirigir al dashboard
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const validateForm = (): boolean => {
     setValidationError('');
