@@ -123,10 +123,24 @@ const SendMessage = () => {
       setTimeout(() => {
         navigate("/messages/sent");
       }, 2000);
-    } catch (error: any) {
-      const errorMsg =
-        error.response?.data?.message || "Error al enviar el mensaje";
-      setErrorMessage(Array.isArray(errorMsg) ? errorMsg.join(", ") : errorMsg);
+    } catch (error: unknown) {
+      let errorMsg = "Error al enviar el mensaje";
+
+      if (typeof error === "string") {
+        errorMsg = error;
+      } else if (typeof error === "object" && error !== null) {
+        const maybeErr = error as {
+          response?: { data?: { message?: string | string[] } };
+        };
+        const msg = maybeErr.response?.data?.message;
+        if (typeof msg === "string") {
+          errorMsg = msg;
+        } else if (Array.isArray(msg)) {
+          errorMsg = msg.join(", ");
+        }
+      }
+
+      setErrorMessage(errorMsg);
     } finally {
       setIsLoading(false);
     }

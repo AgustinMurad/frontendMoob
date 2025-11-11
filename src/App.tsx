@@ -10,7 +10,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import SendMessage from "./pages/SendMessage";
-import MessagesSent from "./pages/MessagesSent";
+import SentMessages from "./pages/SentMessages";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
@@ -45,7 +45,7 @@ function App() {
               path="/messages/sent"
               element={
                 <ProtectedRoute>
-                  <MessagesSent />
+                  <SentMessages />
                 </ProtectedRoute>
               }
             />
