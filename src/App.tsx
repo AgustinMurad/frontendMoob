@@ -9,7 +9,7 @@ import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-import MessagesSend from "./pages/MessagesSend";
+import SendMessage from "./pages/SendMessage";
 import MessagesSent from "./pages/MessagesSent";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
@@ -37,7 +37,7 @@ function App() {
               path="/messages/send"
               element={
                 <ProtectedRoute>
-                  <MessagesSend />
+                  <SendMessage />
                 </ProtectedRoute>
               }
             />
