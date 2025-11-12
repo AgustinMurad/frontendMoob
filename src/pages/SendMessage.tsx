@@ -147,22 +147,25 @@ const SendMessage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4">
+    <div className="min-h-screen bg-zinc-900 py-8 px-4">
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">
+        <div className="bg-zinc-800 border border-zinc-700 rounded-2xl shadow-lg p-8">
+          <h1 className="text-3xl font-bold text-gray-100 mb-2">
             Enviar Mensaje
           </h1>
+          <p className="text-gray-400 mb-8">
+            Envía mensajes a través de múltiples plataformas con <span className="text-cyan-400 font-semibold">MOOB</span>
+          </p>
 
           {/* Mensajes de éxito/error */}
           {successMessage && (
-            <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+            <div className="mb-6 p-4 bg-green-500/10 border border-green-500/50 text-green-400 rounded-lg">
               {successMessage}
             </div>
           )}
 
           {errorMessage && (
-            <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 text-red-400 rounded-lg">
               {errorMessage}
             </div>
           )}
@@ -172,7 +175,7 @@ const SendMessage = () => {
             <div>
               <label
                 htmlFor="platform"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-medium text-gray-300 mb-2"
               >
                 Plataforma *
               </label>
@@ -182,7 +185,7 @@ const SendMessage = () => {
                 onChange={(e) => setPlatform(e.target.value as Platform)}
                 required
                 disabled={isLoading}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+                className="w-full px-4 py-3 bg-zinc-700 border border-zinc-600 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent disabled:bg-zinc-800"
               >
                 {platforms.map((p) => (
                   <option key={p.value} value={p.value}>
@@ -196,7 +199,7 @@ const SendMessage = () => {
             <div>
               <label
                 htmlFor="recipients"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-medium text-gray-300 mb-2"
               >
                 Destinatarios *
               </label>
@@ -208,7 +211,7 @@ const SendMessage = () => {
                 placeholder="Ej: 123456789, 987654321 (separados por comas)"
                 required
                 disabled={isLoading}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+                className="w-full px-4 py-3 bg-zinc-700 border border-zinc-600 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent placeholder-gray-500 disabled:bg-zinc-800"
               />
               <p className="text-xs text-gray-500 mt-1">
                 Ingresa los IDs separados por comas. Para Telegram usa chat_id,
@@ -220,7 +223,7 @@ const SendMessage = () => {
             <div>
               <label
                 htmlFor="content"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-medium text-gray-300 mb-2"
               >
                 Contenido del mensaje *
               </label>
@@ -233,7 +236,7 @@ const SendMessage = () => {
                 rows={6}
                 maxLength={5000}
                 disabled={isLoading}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 resize-none"
+                className="w-full px-4 py-3 bg-zinc-700 border border-zinc-600 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent placeholder-gray-500 disabled:bg-zinc-800 resize-none"
               />
               <p className="text-xs text-gray-500 mt-1">
                 {content.length} / 5000 caracteres
@@ -242,12 +245,12 @@ const SendMessage = () => {
 
             {/* Archivo */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Archivo adjunto (opcional)
               </label>
 
               {!file ? (
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition">
+                <div className="border-2 border-dashed border-zinc-600 rounded-lg p-6 text-center hover:border-cyan-400 transition bg-zinc-900/50">
                   <input
                     type="file"
                     id="file"
@@ -261,7 +264,7 @@ const SendMessage = () => {
                     className="cursor-pointer flex flex-col items-center"
                   >
                     <svg
-                      className="w-12 h-12 text-gray-400 mb-2"
+                      className="w-12 h-12 text-cyan-400 mb-2"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -273,7 +276,7 @@ const SendMessage = () => {
                         d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                       />
                     </svg>
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-gray-300">
                       Haz clic para seleccionar un archivo
                     </span>
                     <span className="text-xs text-gray-500 mt-1">
@@ -282,7 +285,7 @@ const SendMessage = () => {
                   </label>
                 </div>
               ) : (
-                <div className="border border-gray-300 rounded-lg p-4">
+                <div className="border border-zinc-600 rounded-lg p-4 bg-zinc-900/50">
                   {filePreview ? (
                     <div className="mb-3">
                       <img
@@ -294,7 +297,7 @@ const SendMessage = () => {
                   ) : (
                     <div className="flex items-center justify-center mb-3">
                       <svg
-                        className="w-16 h-16 text-gray-400"
+                        className="w-16 h-16 text-cyan-400"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -309,7 +312,7 @@ const SendMessage = () => {
                     </div>
                   )}
                   <div className="text-center">
-                    <p className="text-sm font-medium text-gray-700">
+                    <p className="text-sm font-medium text-gray-300">
                       {file.name}
                     </p>
                     <p className="text-xs text-gray-500">
@@ -319,7 +322,7 @@ const SendMessage = () => {
                       type="button"
                       onClick={removeFile}
                       disabled={isLoading}
-                      className="mt-2 text-sm text-red-600 hover:text-red-700 font-medium"
+                      className="mt-2 text-sm text-red-400 hover:text-red-300 font-medium"
                     >
                       Eliminar archivo
                     </button>
@@ -329,11 +332,11 @@ const SendMessage = () => {
             </div>
 
             {/* Botones */}
-            <div className="flex gap-4">
+            <div className="flex gap-4 mt-8">
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex-1 bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center">
@@ -368,7 +371,7 @@ const SendMessage = () => {
                 type="button"
                 onClick={() => navigate("/messages/sent")}
                 disabled={isLoading}
-                className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition disabled:opacity-50"
+                className="px-6 py-3 bg-zinc-700 hover:bg-zinc-600 text-gray-100 font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Cancelar
               </button>

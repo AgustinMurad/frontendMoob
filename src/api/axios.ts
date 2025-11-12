@@ -23,7 +23,11 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     // Si el token expiró o es inválido, redirigir al login
-    if (error.response?.status === 401) {
+    // PERO no redirigir si el error viene de login o register
+    const isAuthEndpoint = error.config?.url?.includes('/auth/login') ||
+                           error.config?.url?.includes('/auth/register');
+
+    if (error.response?.status === 401 && !isAuthEndpoint) {
       localStorage.removeItem("token");
       window.location.href = "/login";
     }

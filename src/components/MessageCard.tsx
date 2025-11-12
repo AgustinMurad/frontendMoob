@@ -1,5 +1,5 @@
-import type { Message } from "../types/message.types";
-import PlatformBadge from "./PlatformBadge";
+import type { Message } from '../types/message.types';
+import PlatformBadge from './PlatformBadge';
 
 interface MessageCardProps {
   message: Message;
@@ -8,49 +8,60 @@ interface MessageCardProps {
 const MessageCard = ({ message }: MessageCardProps) => {
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
-    return date.toLocaleString("es-ES", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+    return date.toLocaleString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
     });
   };
 
-  const truncateContent = (
-    content: string,
-    maxLength: number = 100
-  ): string => {
+  const truncateContent = (content: string, maxLength: number = 100): string => {
     if (content.length <= maxLength) return content;
-    return content.substring(0, maxLength) + "...";
+    return content.substring(0, maxLength) + '...';
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-2">
+    <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-5 hover:bg-zinc-800/80 hover:border-cyan-500/30 transition-all duration-200 shadow-md">
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex items-center gap-2 flex-wrap">
           <PlatformBadge platform={message.platform} />
           {message.sent ? (
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-              <span className="mr-1">🟢</span> Enviado
+            <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-green-500 text-zinc-900">
+              🟢 Enviado
             </span>
           ) : (
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-              <span className="mr-1">🔴</span> Fallido
+            <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-red-500 text-zinc-900">
+              🔴 Fallido
             </span>
           )}
         </div>
-        <span className="text-xs text-gray-500">
+        <span className="text-xs text-gray-400 whitespace-nowrap ml-2">
           {formatDate(message.createdAt)}
         </span>
       </div>
 
-      <p className="text-gray-700 mb-3">{truncateContent(message.content)}</p>
+      <p className="text-gray-300 mb-4 leading-relaxed">{truncateContent(message.content)}</p>
 
-      <div className="flex items-center justify-between text-sm">
-        <div className="flex items-center gap-2 text-gray-600">
-          <span className="font-medium">Destinatarios:</span>
-          <span>{message.recipients.length}</span>
+      <div className="flex items-center justify-between text-sm border-t border-zinc-700 pt-4">
+        <div className="flex items-center gap-2 text-gray-400">
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+            />
+          </svg>
+          <span className="font-medium text-gray-300">
+            {message.recipients.length} destinatario{message.recipients.length !== 1 ? 's' : ''}
+          </span>
         </div>
 
         {message.fileUrl && (
@@ -58,7 +69,7 @@ const MessageCard = ({ message }: MessageCardProps) => {
             href={message.fileUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
+            className="text-cyan-400 hover:text-cyan-300 font-medium flex items-center gap-1 transition"
           >
             <svg
               className="w-4 h-4"

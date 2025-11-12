@@ -1,6 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import { useSentMessages } from '../hooks/useSentMessages';
-import MessageCard from '../components/MessageCard';
+import { useNavigate } from "react-router-dom";
+import { useSentMessages } from "../hooks/useSentMessages";
+import MessageCard from "../components/MessageCard";
 
 const SentMessages = () => {
   const navigate = useNavigate();
@@ -27,10 +27,10 @@ const SentMessages = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4">
+    <div className="min-h-screen bg-zinc-900 py-8 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+        <div className="bg-gray-100 rounded-xl shadow-lg p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-800">
@@ -41,7 +41,7 @@ const SentMessages = () => {
               </p>
             </div>
             <button
-              onClick={() => navigate('/messages/send')}
+              onClick={() => navigate("/messages/send")}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition flex items-center gap-2"
             >
               <svg
@@ -87,8 +87,8 @@ const SentMessages = () => {
               <span
                 className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
                   cache.hit
-                    ? 'bg-yellow-100 text-yellow-800'
-                    : 'bg-blue-100 text-blue-800'
+                    ? "bg-yellow-100 text-yellow-800"
+                    : "bg-blue-100 text-blue-800"
                 }`}
               >
                 <svg
@@ -100,7 +100,7 @@ const SentMessages = () => {
                   <path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z" />
                   <path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z" />
                 </svg>
-                {cache.hit ? 'Cache Redis' : 'Base de datos'}
+                {cache.hit ? "Cache Redis" : "Base de datos"}
               </span>
             )}
 
@@ -157,7 +157,7 @@ const SentMessages = () => {
               mensaje.
             </p>
             <button
-              onClick={() => navigate('/messages/send')}
+              onClick={() => navigate("/messages/send")}
               className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
             >
               Enviar Primer Mensaje
@@ -201,11 +201,18 @@ const SentMessages = () => {
 
                   <div className="text-center">
                     <p className="text-sm text-gray-600">
-                      Página <span className="font-medium">{pagination.currentPage}</span> de{' '}
-                      <span className="font-medium">{pagination.totalPages}</span>
+                      Página{" "}
+                      <span className="font-medium">
+                        {pagination.currentPage}
+                      </span>{" "}
+                      de{" "}
+                      <span className="font-medium">
+                        {pagination.totalPages}
+                      </span>
                     </p>
                     <p className="text-xs text-gray-500 mt-1">
-                      Mostrando {pagination.count} de {pagination.total} mensajes
+                      Mostrando {pagination.count} de {pagination.total}{" "}
+                      mensajes
                     </p>
                   </div>
 

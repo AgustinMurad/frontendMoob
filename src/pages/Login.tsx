@@ -8,11 +8,10 @@ const Login = () => {
   const { login, isLoading, error, clearError, isAuthenticated } = useAuth();
 
   useEffect(() => {
-    // Limpiar error al montar el componente
     clearError();
-  }, [clearError]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // Si ya está autenticado, redirigir al dashboard
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
@@ -20,7 +19,6 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validaciones básicas
     if (!email || !password) {
       return;
     }
@@ -28,32 +26,33 @@ const Login = () => {
     try {
       await login({ email, password });
     } catch (error) {
-      // El error ya se maneja en el contexto
-      console.error('Error en login:', error);
+      // Error ya manejado en AuthContext
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2 text-center">
-          Iniciar Sesión
-        </h1>
-        <p className="text-gray-600 text-center mb-6">
-          Accede a tu cuenta de MOOB
-        </p>
+    <div className="min-h-screen bg-zinc-900 flex items-center justify-center px-4 py-16">
+      <div className="bg-zinc-800 p-8 rounded-2xl shadow-lg w-full max-w-md border border-zinc-700">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-100 mb-2">
+            Iniciar Sesión
+          </h1>
+          <p className="text-gray-400">
+            Accede a tu cuenta de <span className="text-cyan-400 font-semibold">MOOB</span>
+          </p>
+        </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 text-red-400 rounded-lg">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-300 mb-2"
             >
               Email
             </label>
@@ -63,7 +62,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 bg-zinc-700 border border-zinc-600 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent placeholder-gray-500"
               placeholder="tu@email.com"
               disabled={isLoading}
             />
@@ -72,7 +71,7 @@ const Login = () => {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-300 mb-2"
             >
               Contraseña
             </label>
@@ -82,7 +81,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 bg-zinc-700 border border-zinc-600 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent placeholder-gray-500"
               placeholder="Tu contraseña"
               disabled={isLoading}
             />
@@ -91,18 +90,18 @@ const Login = () => {
           <button
             type="submit"
             disabled={isLoading || !email || !password}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
           >
             {isLoading ? 'Cargando...' : 'Iniciar Sesión'}
           </button>
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-gray-600">
+          <p className="text-gray-400">
             ¿No tienes cuenta?{' '}
             <Link
               to="/register"
-              className="text-blue-600 hover:text-blue-700 font-medium"
+              className="text-cyan-400 hover:text-cyan-300 font-medium transition"
             >
               Regístrate aquí
             </Link>

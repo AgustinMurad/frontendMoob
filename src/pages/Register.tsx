@@ -11,11 +11,10 @@ const Register = () => {
   const { register, isLoading, error, clearError, isAuthenticated } = useAuth();
 
   useEffect(() => {
-    // Limpiar error al montar el componente
     clearError();
-  }, [clearError]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // Si ya está autenticado, redirigir al dashboard
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
@@ -23,13 +22,11 @@ const Register = () => {
   const validateForm = (): boolean => {
     setValidationError('');
 
-    // Validar username (3-30 caracteres)
     if (username.length < 3 || username.length > 30) {
       setValidationError('El nombre de usuario debe tener entre 3 y 30 caracteres');
       return false;
     }
 
-    // Validar password (mínimo 7 caracteres, al menos una letra y un número)
     if (password.length < 7) {
       setValidationError('La contraseña debe tener al menos 7 caracteres');
       return false;
@@ -42,7 +39,6 @@ const Register = () => {
       return false;
     }
 
-    // Validar que las contraseñas coincidan
     if (password !== confirmPassword) {
       setValidationError('Las contraseñas no coinciden');
       return false;
@@ -61,25 +57,26 @@ const Register = () => {
     try {
       await register({ username, email, password });
     } catch (error) {
-      // El error ya se maneja en el contexto
-      console.error('Error en registro:', error);
+      // Error ya manejado en AuthContext
     }
   };
 
   const displayError = validationError || error;
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-8">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2 text-center">
-          Crear Cuenta
-        </h1>
-        <p className="text-gray-600 text-center mb-6">
-          Regístrate en MOOB
-        </p>
+    <div className="min-h-screen bg-zinc-900 flex items-center justify-center px-4 py-12">
+      <div className="bg-zinc-800 p-8 rounded-2xl shadow-lg w-full max-w-md border border-zinc-700">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-100 mb-2">
+            Crear Cuenta
+          </h1>
+          <p className="text-gray-400">
+            Regístrate en <span className="text-cyan-400 font-semibold">MOOB</span>
+          </p>
+        </div>
 
         {displayError && (
-          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm">
+          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 text-red-400 rounded-lg text-sm">
             {displayError}
           </div>
         )}
@@ -88,7 +85,7 @@ const Register = () => {
           <div>
             <label
               htmlFor="username"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-300 mb-2"
             >
               Nombre de usuario
             </label>
@@ -100,7 +97,7 @@ const Register = () => {
               required
               minLength={3}
               maxLength={30}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 bg-zinc-700 border border-zinc-600 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent placeholder-gray-500"
               placeholder="usuario123"
               disabled={isLoading}
             />
@@ -110,7 +107,7 @@ const Register = () => {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-300 mb-2"
             >
               Email
             </label>
@@ -120,7 +117,7 @@ const Register = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 bg-zinc-700 border border-zinc-600 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent placeholder-gray-500"
               placeholder="tu@email.com"
               disabled={isLoading}
             />
@@ -129,7 +126,7 @@ const Register = () => {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-300 mb-2"
             >
               Contraseña
             </label>
@@ -140,7 +137,7 @@ const Register = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={7}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 bg-zinc-700 border border-zinc-600 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent placeholder-gray-500"
               placeholder="Mínimo 7 caracteres"
               disabled={isLoading}
             />
@@ -152,7 +149,7 @@ const Register = () => {
           <div>
             <label
               htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-300 mb-2"
             >
               Confirmar contraseña
             </label>
@@ -162,7 +159,7 @@ const Register = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 bg-zinc-700 border border-zinc-600 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent placeholder-gray-500"
               placeholder="Repite tu contraseña"
               disabled={isLoading}
             />
@@ -171,18 +168,18 @@ const Register = () => {
           <button
             type="submit"
             disabled={isLoading || !username || !email || !password || !confirmPassword}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
           >
             {isLoading ? 'Cargando...' : 'Crear Cuenta'}
           </button>
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-gray-600">
+          <p className="text-gray-400">
             ¿Ya tienes cuenta?{' '}
             <Link
               to="/login"
-              className="text-blue-600 hover:text-blue-700 font-medium"
+              className="text-cyan-400 hover:text-cyan-300 font-medium transition"
             >
               Inicia sesión aquí
             </Link>
