@@ -1,150 +1,33 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { messageService } from "../api/message.service";
+import { useSendMessage } from "../hooks/useSendMessage";
 import type { Platform } from "../types/message.types";
 
 const SendMessage = () => {
   const navigate = useNavigate();
+  const {
+    // Estados formulario
+    platform,
+    content,
+    recipientsInput,
+    file,
+    filePreview,
+    setPlatform,
+    setContent,
+    setRecipientsInput,
 
-  // Estados del formulario
-  const [platform, setPlatform] = useState<Platform>("telegram");
-  const [content, setContent] = useState("");
-  const [recipientsInput, setRecipientsInput] = useState("");
-  const [file, setFile] = useState<File | null>(null);
-  const [filePreview, setFilePreview] = useState<string | null>(null);
+    // Estados UI
+    isLoading,
+    successMessage,
+    errorMessage,
 
-  // Estados de UI
-  const [isLoading, setIsLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+    // Fn
+    handleFileChange,
+    removeFile,
+    handleSubmit,
 
-  const platforms: { value: Platform; label: string }[] = [
-    { value: "telegram", label: "Telegram" },
-    { value: "slack", label: "Slack" },
-    { value: "discord", label: "Discord" },
-    { value: "whatsapp", label: "WhatsApp" },
-  ];
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      // Validar tamaño (10MB)
-      if (selectedFile.size > 10 * 1024 * 1024) {
-        setErrorMessage("El archivo no puede superar los 10MB");
-        return;
-      }
-
-      setFile(selectedFile);
-
-      // Crear preview para imágenes
-      if (selectedFile.type.startsWith("image/")) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setFilePreview(reader.result as string);
-        };
-        reader.readAsDataURL(selectedFile);
-      } else {
-        setFilePreview(null);
-      }
-    }
-  };
-
-  const removeFile = () => {
-    setFile(null);
-    setFilePreview(null);
-  };
-
-  const parseRecipients = (input: string): string[] => {
-    // Separar por comas, espacios o saltos de línea
-    return input
-      .split(/[,\n\s]+/)
-      .map((r) => r.trim())
-      .filter((r) => r.length > 0);
-  };
-
-  const validateForm = (): boolean => {
-    setErrorMessage("");
-
-    if (!platform) {
-      setErrorMessage("Selecciona una plataforma");
-      return false;
-    }
-
-    if (!content.trim()) {
-      setErrorMessage("El contenido del mensaje es requerido");
-      return false;
-    }
-
-    if (content.length > 5000) {
-      setErrorMessage("El contenido no puede superar los 5000 caracteres");
-      return false;
-    }
-
-    const recipients = parseRecipients(recipientsInput);
-    if (recipients.length === 0) {
-      setErrorMessage("Debes agregar al menos un destinatario");
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsLoading(true);
-    setErrorMessage("");
-    setSuccessMessage("");
-
-    try {
-      const recipients = parseRecipients(recipientsInput);
-
-      await messageService.sendMessage({
-        platform,
-        content,
-        recipients,
-        file: file || undefined,
-      });
-
-      setSuccessMessage("¡Mensaje enviado exitosamente!");
-
-      // Limpiar formulario
-      setPlatform("telegram");
-      setContent("");
-      setRecipientsInput("");
-      setFile(null);
-      setFilePreview(null);
-
-      // Redirigir a mensajes enviados después de 2 segundos
-      setTimeout(() => {
-        navigate("/messages/sent");
-      }, 2000);
-    } catch (error: unknown) {
-      let errorMsg = "Error al enviar el mensaje";
-
-      if (typeof error === "string") {
-        errorMsg = error;
-      } else if (typeof error === "object" && error !== null) {
-        const maybeErr = error as {
-          response?: { data?: { message?: string | string[] } };
-        };
-        const msg = maybeErr.response?.data?.message;
-        if (typeof msg === "string") {
-          errorMsg = msg;
-        } else if (Array.isArray(msg)) {
-          errorMsg = msg.join(", ");
-        }
-      }
-
-      setErrorMessage(errorMsg);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    // Const
+    platforms,
+  } = useSendMessage();
 
   return (
     <div className="min-h-screen bg-zinc-900 py-8 px-4">
@@ -154,7 +37,8 @@ const SendMessage = () => {
             Enviar Mensaje
           </h1>
           <p className="text-gray-400 mb-8">
-            Envía mensajes a través de múltiples plataformas con <span className="text-cyan-400 font-semibold">MOOB</span>
+            Envía mensajes a través de múltiples plataformas con{" "}
+            <span className="text-cyan-400 font-semibold">MOOB</span>
           </p>
 
           {/* Mensajes de éxito/error */}
