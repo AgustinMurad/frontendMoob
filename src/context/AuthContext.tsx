@@ -1,7 +1,13 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { authService } from '../api/auth.service';
-import { LoginDto, RegisterDto, User } from '../types/auth.types';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
+import { useNavigate } from "react-router-dom";
+import { authService } from "../api/auth.service";
+import type { LoginDto, RegisterDto, User } from "../types/auth.types";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -28,7 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Al montar, verificar si hay token en localStorage
   useEffect(() => {
     const checkAuth = async () => {
-      const storedToken = localStorage.getItem('token');
+      const storedToken = localStorage.getItem("token");
 
       if (storedToken) {
         setToken(storedToken);
@@ -39,7 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setIsAuthenticated(true);
         } catch (error) {
           // Token inválido o expirado
-          localStorage.removeItem('token');
+          localStorage.removeItem("token");
           setToken(null);
           setIsAuthenticated(false);
         }
@@ -60,7 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const accessToken = response.access_token;
 
       // Guardar token
-      localStorage.setItem('token', accessToken);
+      localStorage.setItem("token", accessToken);
       setToken(accessToken);
 
       // Obtener perfil del usuario
@@ -69,13 +75,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthenticated(true);
 
       // Redirigir al dashboard
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err: any) {
       const errorMessage =
         err.response?.data?.message ||
-        'Error al iniciar sesión. Por favor, intenta de nuevo.';
+        "Error al iniciar sesión. Por favor, intenta de nuevo.";
 
-      setError(Array.isArray(errorMessage) ? errorMessage.join(', ') : errorMessage);
+      setError(
+        Array.isArray(errorMessage) ? errorMessage.join(", ") : errorMessage
+      );
       throw err;
     } finally {
       setIsLoading(false);
@@ -91,7 +99,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const accessToken = response.access_token;
 
       // Guardar token
-      localStorage.setItem('token', accessToken);
+      localStorage.setItem("token", accessToken);
       setToken(accessToken);
 
       // Obtener perfil del usuario
@@ -100,13 +108,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthenticated(true);
 
       // Redirigir al dashboard
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err: any) {
       const errorMessage =
         err.response?.data?.message ||
-        'Error al registrarse. Por favor, intenta de nuevo.';
+        "Error al registrarse. Por favor, intenta de nuevo.";
 
-      setError(Array.isArray(errorMessage) ? errorMessage.join(', ') : errorMessage);
+      setError(
+        Array.isArray(errorMessage) ? errorMessage.join(", ") : errorMessage
+      );
       throw err;
     } finally {
       setIsLoading(false);
@@ -114,11 +124,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setToken(null);
     setUser(null);
     setIsAuthenticated(false);
-    navigate('/login');
+    navigate("/login");
   };
 
   const clearError = () => {
@@ -148,7 +158,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth debe ser usado dentro de un AuthProvider');
+    throw new Error("useAuth debe ser usado dentro de un AuthProvider");
   }
   return context;
 };
