@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { messageService } from "../api/message.service";
 import type { Platform } from "../types/message.types";
+import { MAX_FILE_SIZE_BYTES, MAX_FILE_SIZE_MB, ALLOWED_TYPES } from "../config/uploadConfig";
 
 export interface UseSendMessageReturn {
   // Estados del formulario
@@ -52,25 +53,34 @@ export const useSendMessage = (): UseSendMessageReturn => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      // Validar tamaño (10MB)
-      if (selectedFile.size > 10 * 1024 * 1024) {
-        setErrorMessage("El archivo no puede superar los 10MB");
-        return;
-      }
+    if (!selectedFile) return;
 
-      setFile(selectedFile);
+    // Validar tamaño
+    if (selectedFile.size > MAX_FILE_SIZE_BYTES) {
+      setErrorMessage(`El archivo supera el tamaño máximo permitido (${MAX_FILE_SIZE_MB} MB)`);
+      e.target.value = '';
+      return;
+    }
 
-      // Crear preview para imágenes
-      if (selectedFile.type.startsWith("image/")) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setFilePreview(reader.result as string);
-        };
-        reader.readAsDataURL(selectedFile);
-      } else {
-        setFilePreview(null);
-      }
+    // Validar tipo de archivo
+    if (!ALLOWED_TYPES.includes(selectedFile.type)) {
+      setErrorMessage('Solo se permiten imágenes (JPG, PNG, WEBP) y PDF.');
+      e.target.value = '';
+      return;
+    }
+
+    setFile(selectedFile);
+    setErrorMessage(''); // Limpiar mensaje de error previo
+
+    // Crear preview para imágenes
+    if (selectedFile.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFilePreview(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
+    } else {
+      setFilePreview(null);
     }
   };
 
